@@ -19,10 +19,10 @@ And you'll be given output into the `topics` object.
 ```json
 [
 {
-  url: "https://github.community/t/topic/id"
-  excerpt: "excerpt provided by the API",
-  title: "title of the topic",
-  reply_count: 100
+  "url": "https://github.community/t/topic/id",
+  "excerpt": "excerpt provided by the API",
+  "title": "title of the topic",
+  "reply_count": 100
 }
 ]
 ```
