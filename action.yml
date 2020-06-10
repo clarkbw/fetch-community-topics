@@ -1,10 +1,15 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'GitHub Community Forum Action'
+description: 'Fetches topics from a community forum'
+author: 'Bryan Clark'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  slug:
+    description: 'The URL path for your community https://github.community/c/SLUG/ID for example "github-packages/43"'
+  url:
+    description: 'The URL for your community, defaults to "https://github.community/"'
+    default: 'https://github.community/'
+  unanswered:
+    description: 'Only return the unanswered topics, defaults to true'
+    default: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
