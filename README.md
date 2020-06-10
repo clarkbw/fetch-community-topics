@@ -16,6 +16,19 @@ Use like this:
 
 And you'll be given output into the `topics` object.
 
+```json
+[
+{
+  url: "https://github.community/t/topic/id"
+  excerpt: "excerpt provided by the API",
+  title: "title of the topic",
+  reply_count: 100
+}
+]
+```
+
+Currently we ignore pinned topics but we might provide an option for that or include it in the payload so you can filter it out later.
+
 # Development
 
 Here are instructions for development which haven't seen much testing.
