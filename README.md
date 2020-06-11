@@ -27,6 +27,41 @@ And you'll be given an array of objects as output into the `topics` object.
 ]
 ```
 
+Control for and use the output for another step:
+
+```yml
+  steps:
+    - uses: clarkbw/fetch-community-topics@main
+      id: community
+      with: 
+        slug: 'github-packages/43'
+    - name: Docker stuff # only run this step if the title contains the word 'docker'
+      if: ${{ contains(steps.community.outputs.topics.*.title, 'docker') }}
+      run: echo ${{ steps.community.outputs.topics.*.url }} # echo an array of URLs only
+```
+
+Use the output of only URLs for another job:
+
+```yml
+name: build
+on: push
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      topic-urls: ${{ steps.community.outputs.topics.*.url }}
+    steps:
+    - uses: clarkbw/fetch-community-topics@main
+      id: community
+      with: 
+        slug: 'github-packages/43'
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+    - run: build ${{fromJson(needs.job1.outputs.topic-urls)}}
+```
+
 Currently we ignore pinned topics but we might provide an option for that or include it in the payload so you can filter it out later.
 
 # Development
