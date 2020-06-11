@@ -4,7 +4,7 @@
 
 # Discourse Topics Action
 
-This is a composible Action for pulling topics from a [GitHub Discourse Community](https://github.community/) category.
+This is a composible Action for pulling topics from a [GitHub Discourse Community](https://github.community/) category using the [Discourse Categories API](https://docs.discourse.org/#tag/Categories/paths/~1categories.json/post).
 
 Use like this:
 
