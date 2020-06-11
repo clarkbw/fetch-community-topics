@@ -14,7 +14,7 @@ Use like this:
         slug: 'github-packages/43'
 ```
 
-And you'll be given output into the `topics` object.
+And you'll be given an array of objects as output into the `topics` object.
 
 ```json
 [

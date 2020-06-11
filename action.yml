@@ -10,6 +10,9 @@ inputs:
   unanswered:
     description: 'Only return the unanswered topics, defaults to true'
     default: true
+outputs:
+  topics:
+    description: 'An array of objects related to topic information'
 runs:
   using: 'node12'
   main: 'dist/index.js'
