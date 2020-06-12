@@ -873,25 +873,27 @@ function getTopicURL(url, slug, id) {
 function getCategoryURL(url, slug) {
     return `${url}/c/${slug}.json`;
 }
+;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const url = core.getInput('url');
             const slug = core.getInput('slug', { required: true });
-            const unanswered = !!!core.getInput('unanswered');
+            const unanswered = JSON.parse(core.getInput('unanswered').toLowerCase());
+            const pinned = JSON.parse(core.getInput('pinned').toLowerCase());
             const response = yield axios_1.default.get(getCategoryURL(url, slug));
-            console.log('topics', response.data.topic_list.topics);
-            const all = response.data.topic_list.topics.filter((t) => !!!t.pinned).map((t) => {
+            let topics = response.data.topic_list.topics.map((t) => {
                 return {
                     url: getTopicURL(url, t.slug, t.id),
                     excerpt: t.excerpt,
                     title: t.title,
-                    reply_count: t.reply_count
+                    reply_count: t.reply_count,
+                    pinned: t.pinned,
+                    has_accepted_answer: t.has_accepted_answer
                 };
             });
-            const topics = unanswered
-                ? all.filter((t) => !!!t.has_accepted_answer)
-                : all;
+            topics = pinned ? topics : topics.filter((t) => !t.pinned);
+            topics = unanswered ? topics.filter((t) => !t.has_accepted_answer) : topics;
             core.setOutput('topics', JSON.stringify(topics));
         }
         catch (error) {

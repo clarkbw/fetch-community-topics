@@ -11,8 +11,8 @@ inputs:
     description: 'Only return the unanswered topics, defaults to true'
     default: true
   pinned:
-      description: 'Return pinned topics along with all others, defaults to true'
-      default: true
+    description: 'Return pinned topics along with all others, defaults to true'
+    default: true
 outputs:
   topics:
     description: 'An array of objects related to topic information'
