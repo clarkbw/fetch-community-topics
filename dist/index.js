@@ -868,12 +868,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const axios_1 = __importDefault(__webpack_require__(53));
 function getTopicURL(url, slug, id) {
-    return `${url}/t/${slug}/${id}`;
+    return new URL(`/t/${slug}/${id}`, url).href;
 }
 function getCategoryURL(url, slug) {
-    return `${url}/c/${slug}.json`;
+    return new URL(`/c/${slug}.json`, url).href;
 }
-;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -893,7 +892,9 @@ function run() {
                 };
             });
             topics = pinned ? topics : topics.filter((t) => !t.pinned);
-            topics = unanswered ? topics.filter((t) => !t.has_accepted_answer) : topics;
+            topics = unanswered
+                ? topics.filter((t) => !t.has_accepted_answer)
+                : topics;
             core.setOutput('topics', JSON.stringify(topics));
         }
         catch (error) {

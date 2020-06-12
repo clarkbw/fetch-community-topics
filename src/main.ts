@@ -2,11 +2,11 @@ import * as core from '@actions/core';
 import axios from 'axios';
 
 function getTopicURL(url: string, slug: string, id: string) {
-  return `${url}/t/${slug}/${id}`;
+  return new URL(`/t/${slug}/${id}`, url).href;
 }
 
 function getCategoryURL(url: string, slug: string) {
-  return `${url}/c/${slug}.json`;
+  return new URL(`/c/${slug}.json`, url).href;
 }
 
 interface CommunityTopic {
