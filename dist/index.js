@@ -881,6 +881,7 @@ function run() {
             const unanswered = JSON.parse(core.getInput('unanswered').toLowerCase());
             const pinned = JSON.parse(core.getInput('pinned').toLowerCase());
             const response = yield axios_1.default.get(getCategoryURL(url, slug));
+            core.debug(response.data);
             let topics = response.data.topic_list.topics.map((t) => {
                 return {
                     url: getTopicURL(url, t.slug, t.id),

@@ -28,6 +28,7 @@ async function run(): Promise<void> {
     const pinned: boolean = JSON.parse(core.getInput('pinned').toLowerCase());
 
     const response = await axios.get(getCategoryURL(url, slug));
+    core.debug(response.data);
 
     let topics: Array<CommunityTopic> = response.data.topic_list.topics.map(
       (t: any) => {
