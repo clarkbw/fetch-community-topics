@@ -882,14 +882,16 @@ function run() {
             const pinned = JSON.parse(core.getInput('pinned').toLowerCase());
             const response = yield axios_1.default.get(getCategoryURL(url, slug));
             core.debug(response.data);
-            let topics = response.data.topic_list.topics.map((t) => {
+            const allTopics = response.data.topic_list.topics;
+            let topics = allTopics.map((t) => {
                 return {
                     url: getTopicURL(url, t.slug, t.id),
                     excerpt: t.excerpt,
                     title: t.title,
                     reply_count: t.reply_count,
                     pinned: t.pinned,
-                    has_accepted_answer: t.has_accepted_answer
+                    has_accepted_answer: t.has_accepted_answer,
+                    tags: t.tags
                 };
             });
             topics = pinned ? topics : topics.filter((t) => !t.pinned);
@@ -897,6 +899,7 @@ function run() {
                 ? topics.filter((t) => !t.has_accepted_answer)
                 : topics;
             core.setOutput('topics', JSON.stringify(topics));
+            core.setOutput('length', topics.length);
         }
         catch (error) {
             console.error(error);

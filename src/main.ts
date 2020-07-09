@@ -1,21 +1,14 @@
 import * as core from '@actions/core';
 import axios from 'axios';
 
+import {ICommunityTopic, IDiscourseTopic} from './interfaces';
+
 function getTopicURL(url: string, slug: string, id: string) {
   return new URL(`/t/${slug}/${id}`, url).href;
 }
 
 function getCategoryURL(url: string, slug: string) {
   return new URL(`/c/${slug}.json`, url).href;
-}
-
-interface CommunityTopic {
-  url: string;
-  excerpt: string;
-  title: string;
-  reply_count: number;
-  pinned: boolean;
-  has_accepted_answer: boolean;
 }
 
 async function run(): Promise<void> {
@@ -30,26 +23,28 @@ async function run(): Promise<void> {
     const response = await axios.get(getCategoryURL(url, slug));
     core.debug(response.data);
 
-    let topics: Array<CommunityTopic> = response.data.topic_list.topics.map(
-      (t: any) => {
-        return {
-          url: getTopicURL(url, t.slug, t.id),
-          excerpt: t.excerpt,
-          title: t.title,
-          reply_count: t.reply_count,
-          pinned: t.pinned,
-          has_accepted_answer: t.has_accepted_answer
-        };
-      }
-    );
+    const allTopics: Array<IDiscourseTopic> = response.data.topic_list.topics;
 
-    topics = pinned ? topics : topics.filter((t: CommunityTopic) => !t.pinned);
+    let topics: Array<ICommunityTopic> = allTopics.map((t: IDiscourseTopic) => {
+      return {
+        url: getTopicURL(url, t.slug, t.id),
+        excerpt: t.excerpt,
+        title: t.title,
+        reply_count: t.reply_count,
+        pinned: t.pinned,
+        has_accepted_answer: t.has_accepted_answer,
+        tags: t.tags
+      };
+    });
+
+    topics = pinned ? topics : topics.filter((t: ICommunityTopic) => !t.pinned);
 
     topics = unanswered
-      ? topics.filter((t: CommunityTopic) => !t.has_accepted_answer)
+      ? topics.filter((t: ICommunityTopic) => !t.has_accepted_answer)
       : topics;
 
     core.setOutput('topics', JSON.stringify(topics));
+    core.setOutput('length', topics.length);
   } catch (error) {
     console.error(error);
     core.setFailed(error.message);
