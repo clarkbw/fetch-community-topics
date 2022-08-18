@@ -24,7 +24,7 @@
   "author": "Bryan Clark",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.9.1",
     "axios": "^0.21.2"
   },
   "devDependencies": {
